@@ -1,5 +1,5 @@
 ## Possible to obtain the latest vscode server download via
-
+## Still thinking being specific about versions will be helpful going ahead in case of bugs etc.
 version="$(curl -fsSLI -o /dev/null -w "%{url_effective}" https://github.com/cdr/code-server/releases/latest)"
 
 version="${version#https://github.com/cdr/code-server/releases/tag/v}"
@@ -9,4 +9,16 @@ echo $version
 curl -#fL -o code-server_3.4.0_amd64.deb -C - https://github.com/cdr/code-server/releases/download/v3.4.0/code-server_3.4.0_amd64.deb
 3m
 
+## Python packages requested
+"pycryptodome>=3.9.7",
+"websockets>=8.1",
+"asgiref>=3.2.7",
+"python-pytuntap>=1.0.5",
+"pyzmq>=19.0.0",
+"Pygments>=2.6.1",
+"scapy>=2.4.3",
+"pyserial>=3.4",
+"prompt-toolkit>=3.0.5",
+"cmd2"
+"click"
 

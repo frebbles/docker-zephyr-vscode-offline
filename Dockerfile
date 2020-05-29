@@ -146,8 +146,10 @@ RUN code-server-${VSCODESERVER_VERSION}-linux-x86_64/code-server \
 # Copy required configs into their dirs for vscode extensions
 RUN mkdir /home/user/SVD
 RUN mkdir /home/user/vscode_default
+RUN mkdir -p /home/user/.vscode/User/state/
 ADD ./svd/STM32F746.svd /home/user/SVD/STM32F746.svd
 ADD ./vscode_defaults/* /home/user/vscode_default/
+ADD ./vscode_defaults/global.json /home/user/.vscode/User/state/
 
 # Setup some symlinks for vscode to find and run debugger
 RUN ln -s \

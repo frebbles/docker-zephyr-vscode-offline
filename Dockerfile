@@ -151,7 +151,7 @@ ADD ./vscode_defaults/* /home/user/vscode_default/
 
 # Setup some symlinks for vscode to find and run debugger
 RUN ln -s \
-	/opt/toolchains/zephyr-sdk-${ZSDK_VERSION}/arm-zephyr-eabi/bin/rm-zephyr-eabi-gdb \
+	/opt/toolchains/zephyr-sdk-${ZSDK_VERSION}/arm-zephyr-eabi/bin/arm-zephyr-eabi-gdb \
 	/opt/toolchains/zephyr-sdk-${ZSDK_VERSION}/arm-zephyr-eabi/bin/arm-none-eabi-gdb
 RUN ln -s \
 	/opt/toolchains/zephyr-sdk-${ZSDK_VERSION}/arm-zephyr-eabi/bin/arm-zephyr-eabi-objdump \
@@ -176,7 +176,7 @@ RUN sudo chown -R user:user /zephyrproject
 
 RUN dos2unix /home/user/entrypoint.sh
 
-RUN sed -i 's/VSCODESERVER_VERSION/${VSCODESERVER_VERSION}/g' /home/user/entrypoint.sh
+RUN sed -i "s/VSCODESERVER_VERSION/${VSCODESERVER_VERSION}/g" /home/user/entrypoint.sh
 
 EXPOSE 8080
 

@@ -1,0 +1,19 @@
+
+version="$(curl -fsSLI -o /dev/null -w "%{url_effective}" https://github.com/cdr/code-server/releases/latest)"
+
+version="${version#https://github.com/cdr/code-server/releases/tag/v}"
+
+echo $version
+
+
+curl -#fL -o code-server_3.4.0_amd64.deb -C - https://github.com/cdr/code-server/releases/download/v3.4.0/code-server_3.4.0_amd64.deb
+3m
+
+Maybe?
+/opt/toolchains/gcc-arm-none-eabi-9-2019-q4-major/bin
+
+ln -s /opt/toolchains/zephyr-sdk-0.11.2/arm-zephyr-eabi/bin/rm-zephyr-eabi-gdb /opt/toolchains/zephyr-sdk-0.11.2/arm-zephyr-eabi/bin/arm-none-eabi-gdb
+ln -s /opt/toolchains/zephyr-sdk-0.11.2/arm-zephyr-eabi/bin/arm-zephyr-eabi-objdump /opt/toolchains/zephyr-sdk-0.11.2/arm-zephyr-eabi/bin/arm-none-eabi-objdump
+
+sudo ln -s /opt/toolchains/zephyr-sdk-0.11.2/sysroots/x86_64-pokysdk-linux/usr/bin/openocd /usr/local/bin/openocd
+

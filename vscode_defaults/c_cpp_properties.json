@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/zephyrproject/zephyr/include/**",
+                "/zephyrproject/zephyr/build/zephyr/include/**",
+                "/zephyrproject/modules/hal/stm32/stm32cube/stm32f7xx/drivers/include/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}

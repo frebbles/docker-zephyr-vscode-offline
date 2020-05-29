@@ -1,0 +1,24 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Xephyr f746zg",
+            "cwd": "/workdir",
+            "executable": "build/zephyr/zephyr.elf",
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "openocd",
+            "device": "STM32F746ZG",
+            "svdFile": "${env:HOME}/SVD/STM32F746.svd",
+            "armToolchainPath": "/opt/toolchains/zephyr-sdk-0.11.2/arm-zephyr-eabi/bin",
+            "interface": "swd",
+            "configFiles": [
+                "/zephyrproject/zephyr/boards/arm/nucleo_f746zg/support/openocd.cfg"
+                   ]
+        }
+    ]
+}

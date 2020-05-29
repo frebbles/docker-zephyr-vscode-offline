@@ -96,6 +96,7 @@ should do the trick.
 cd /home/user
 cp ./vscode_default/ /workdir/.vscode/
 ```
+
 1. Programming with 
 
 ```west flash```

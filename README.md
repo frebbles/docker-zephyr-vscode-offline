@@ -48,7 +48,7 @@ This image can be used for development and building zephyr applications, samples
 for example (--privileged required for USB port access/flashing):
 
 ```
-docker run -ti --privileged -p 8080:8080 -v <local path to zephyr working dir>:/workdir zephyr_doc:v_xxx
+docker run -ti --privileged -p 8080:8080 -p 5000:5000 -v <local path to zephyr working dir>:/workdir zephyr_doc:v_xxx
 ```
 
 Then, follow the steps below to build a sample application:

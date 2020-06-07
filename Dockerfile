@@ -120,6 +120,8 @@ RUN wget -q https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2019q4/RC
 RUN wget https://github.com/cdr/code-server/releases/download/v${VSCODESERVER_VERSION}/code-server-${VSCODESERVER_VERSION}-linux-x86_64.tar.gz \
     && tar -xzvf code-server-${VSCODESERVER_VERSION}-linux-x86_64.tar.gz && chmod +x code-server-${VSCODESERVER_VERSION}-linux-x86_64/code-server
 
+RUN pip3 install gdbgui
+
 RUN groupadd -g $GID -o user
 
 RUN useradd -u $UID -m -g user -G plugdev,dialout user \

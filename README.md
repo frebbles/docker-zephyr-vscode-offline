@@ -122,6 +122,17 @@ After performing a clean flash, debugging can be started from within VSCODE by
 clicking the debugging icon on the left and selecting the "start" arrow to trigger the 
 debugger.
 
+Debugging with other tools can be triggered by (with default project under /workdir/build)
+
+Start OpenOCD with gdb connection service on 50000
+```/opt/toolchains/zephyr-sdk-0.11.2/sysroots/x86_64-pokysdk-linux/usr/bin/openocd -c "gdb_port 50000" -s /workdir -f /zephyrproject/zephyr/boards/arm/nucleo_f746zg/support/openocd.cfg```
+
+Via a second terminal:
+```docker exec -ti "container name" bash```
+
+Connect gdbgui (accessible on host via web browser on localhost:5000)
+```python3 -m gdbgui -g /opt/toolchains/zephyr-sdk-0.11.2/arm-zephyr-eabi/bin/arm-zephyr-eabi-gdb --host 0.0.0.0 --project /workdir/build```
+
 ## Moving the Docker image
 
 To export:

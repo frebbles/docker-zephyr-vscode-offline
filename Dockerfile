@@ -118,15 +118,20 @@ RUN wget -q https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2019q4/RC
 
 # download the coder binary, untar it, and allow it to be executed
 RUN wget https://github.com/cdr/code-server/releases/download/v${VSCODESERVER_VERSION}/code-server-${VSCODESERVER_VERSION}-linux-x86_64.tar.gz \
-    && tar -xzvf code-server-${VSCODESERVER_VERSION}-linux-x86_64.tar.gz && chmod +x code-server-${VSCODESERVER_VERSION}-linux-x86_64/code-server
+    && tar -xzvf code-server-${VSCODESERVER_VERSION}-linux-x86_64.tar.gz && chmod -R +x code-server-${VSCODESERVER_VERSION}-linux-x86_64/code-server
 
 RUN pip3 install gdbgui
+
+ADD ./add-reqs.txt /home/user/add-reqs.txt
+RUN pip3 install -r /home/user/add-reqs.txt
 
 RUN groupadd -g $GID -o user
 
 RUN useradd -u $UID -m -g user -G plugdev,dialout user \
 	&& echo 'user ALL = NOPASSWD: ALL' > /etc/sudoers.d/user \
 	&& chmod 0440 /etc/sudoers.d/user
+
+RUN chown -R user:user /home/user
 
 USER user
 

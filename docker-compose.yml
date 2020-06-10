@@ -7,9 +7,7 @@ services:
       - "8080:8080"
     restart: always
     cpus: '4'
-    devices:
-      - "/dev/ttyACM0:/dev/ttyACM0"
-    volumes:
-      - /home/user/zephyr/development:/workdir
-    restart: always
     privileged: true
+    volumes:
+      - ./temp:/workdir
+    restart: always

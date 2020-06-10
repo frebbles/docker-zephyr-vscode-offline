@@ -136,31 +136,26 @@ RUN /bin/bash -c "mv /code-server-${VSCODESERVER_VERSION}-linux-x86_64/ /etc/vsc
 
 # 13. Install the required extensions for debugging
 RUN /etc/vscode/code-server \
-        --user-data-dir=/home/user/.vscode/ \
-        --extensions-dir=/home/user/.vscode-oss/extensions/ \
+        --user-data-dir=/etc/vscode/.vscode/ \
+        --extensions-dir=/etc/vscode/.vscode-oss/extensions/ \
         --install-extension ms-vscode.cpptools
 
 RUN /etc/vscode/code-server \
-        --user-data-dir=/home/user/.vscode/ \
-        --extensions-dir=/home/user/.vscode-oss/extensions/ \
+        --user-data-dir=/etc/vscode/.vscode/ \
+        --extensions-dir=/etc/vscode/.vscode-oss/extensions/ \
         --install-extension marus25.cortex-debug
 
 RUN /etc/vscode/code-server \
-        --user-data-dir=/home/user/.vscode/ \
-        --extensions-dir=/home/user/.vscode-oss/extensions/ \
+        --user-data-dir=/etc/vscode/.vscode/ \
+        --extensions-dir=/etc/vscode/.vscode-oss/extensions/ \
         --install-extension lextudio.restructuredtext
 
-# 14. Copy required configs into their dirs for vscode extensions
-RUN mkdir /home/user/SVD
-RUN mkdir /home/user/vscode_default
-RUN mkdir -p /home/user/.vscode/User/state/
-ADD ./svd/STM32F746.svd /home/user/SVD/STM32F746.svd
-ADD ./vscode_defaults/* /home/user/vscode_default/
-ADD ./vscode_defaul0.50/zephyr-sdk-${ZSDK_VERSION}/arm-zephyr-eabi/bin/arm-zephyr-eabi-objdump \
-	/opt/toolchains/zephyr-sdk-${ZSDK_VERSION}/arm-zephyr-eabi/bin/arm-none-eabi-objdump
-RUN sudo ln -s \
-	/opt/toolchains/zephyr-sdk-${ZSDK_VERSION}/sysroots/x86_64-pokysdk-linux/usr/bin/openocd \
-	/usr/local/bin/openocd
+RUN mkdir /etc/vscode/SVD
+RUN mkdir /etc/vscode/vscode_default
+RUN mkdir -p /etc/vscode/.vscode/User/state/
+ADD ./svd/STM32F746.svd /etc/vscode/SVD/STM32F746.svd
+ADD ./vscode_defaults/* /etc/vscode/vscode_default/
+ADD ./vscode_defaults/global.json /etc/vscode/.vscode/User/state/
 
 # 15. Set the locale for Zephyr RTOS
 ENV ZEPHYR_TOOLCHAIN_VARIANT=zephyr
@@ -172,4 +167,4 @@ ENV DISPLAY=:0
 ENV SHELL=/bin/bash
 RUN /bin/bash -c "source /zephyrproject/zephyr/zephyr-env.sh"
 
-CMD ["/etc/vscode/code-server", "--extensions-dir", "/etc/vscode/extensions", "--user-data-dir", "/workdir", "--bind-addr", "0.0.0.0:8080", "--auth" ,"none"] 
+CMD ["/etc/vscode/code-server", "--extensions-dir", "/etc/vscode/.vscode-oss/extensions/", "--user-data-dir", "/etc/vscode", "--bind-addr", "0.0.0.0:8080", "--auth" ,"none"] 

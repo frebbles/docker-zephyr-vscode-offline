@@ -165,7 +165,6 @@ ENV GNUARMEMB_TOOLCHAIN_PATH=/opt/toolchains/${GCC_ARM_NAME}
 ENV PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig
 ENV DISPLAY=:0
 ENV SHELL=/bin/bash
-RUN /bin/bash -c "source /zephyrproject/zephyr/zephyr-env.sh"
 
 # 16. Make the permissions public for the vscode directory (this is not a risk as it is isolated in a container)
 RUN mkdir /.config
@@ -176,5 +175,8 @@ RUN chmod 777 -R /.config
 RUN chmod 777 -R /zephyrproject
 RUN chmod 777 -R //.ccache
 RUN chmod 777 -R /.local
+
+# 17. Add the required sources for triggering builds
+RUN echo "source /zephyrproject/zephyr/zephyr-env.sh" >> /etc/bash.bashrc
 
 CMD ["/etc/vscode/code-server", "--extensions-dir", "/etc/vscode/.vscode-oss/extensions/", "--user-data-dir", "/etc/vscode", "--bind-addr", "0.0.0.0:8080", "--auth" ,"none"] 

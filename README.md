@@ -86,7 +86,6 @@ make run
 We can also run based off west tool as per zephyr's getting started:
 
 ```
-source /zephyrproject/zephyr/zephyr-env.sh
 west build -p auto -b nucleo_f746zg /zephyrproject/zephyr/samples/basic/blinky
 west flash
 ```

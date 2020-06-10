@@ -10,5 +10,5 @@ services:
     privileged: true
     user: "501"
     volumes:
-      - ./temp:/workdir
+      - ./workdir:/workdir
     restart: always

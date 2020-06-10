@@ -169,7 +169,12 @@ RUN /bin/bash -c "source /zephyrproject/zephyr/zephyr-env.sh"
 
 # 16. Make the permissions public for the vscode directory (this is not a risk as it is isolated in a container)
 RUN mkdir /.config
+RUN mkdir /.local
+RUN mkdir -p //.ccache
 RUN chmod 777 -R /etc/vscode
 RUN chmod 777 -R /.config
+RUN chmod 777 -R /zephyrproject
+RUN chmod 777 -R //.ccache
+RUN chmod 777 -R /.local
 
 CMD ["/etc/vscode/code-server", "--extensions-dir", "/etc/vscode/.vscode-oss/extensions/", "--user-data-dir", "/etc/vscode", "--bind-addr", "0.0.0.0:8080", "--auth" ,"none"] 

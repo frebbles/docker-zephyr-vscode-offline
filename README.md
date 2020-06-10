@@ -20,21 +20,40 @@ STLink on the nucleo dev boards.
  * Windows or Ubuntu Host machine with USB Passthrough for STMicro device.
    * Virtual Box VM
      * Ubuntu 18:04/20:04 LTS
-     * Docker installed
+     * Docker
+     * Docker Compose
 
-NOTE: Not recommended to run under Windows10 native with Docker, the USB device passthrough isn't
+NOTE: Not recommended to run under Windows 10 bare-metal with Docker, the USB device passthrough isn't
 working properly.
 
+## Docker Compose Installation
+
+To install Docker Compose on linux, run:
+
+```sudo curl -L "https://github.com/docker/compose/releases/download/1.26.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose```
+
+And then apply executable permissions to the binary:
+
+```sudo chmod +x /usr/local/bin/docker-compose```
+
 ## Building
-Before building docker image, ensure that the entrypoint.sh has execute persmissions!
+To run the image, execute:
 
-```chmod ug+x entrypoint.sh```
+```docker-compose up```
 
-This docker image can be built with the following
+If you don't want logs and to be attached to the image, execute:
 
-```
-docker build -t zvsdev:v1 .
-```
+```docker-compose up -d```
+
+To gain a terminal to the container, run:
+
+```docker ps```
+
+And then run:
+
+```docker exec -it <insert container id> bash```
+
+Which will give you a terminal with West and other required tools installed
 
 ## Running zephyr builds
 

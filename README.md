@@ -36,7 +36,7 @@ And then apply executable permissions to the binary:
 
 ```sudo chmod +x /usr/local/bin/docker-compose```
 
-## Building
+## Running the Development Environment
 To run the image, execute:
 
 ```docker-compose up```
@@ -53,22 +53,25 @@ And then run:
 
 ```docker exec -it <insert container id> bash```
 
-Which will give you a terminal with West and other required tools installed
+Which will give you a terminal with West and other required tools installed. Alternatively, you can use Visual Studio Code's terminal by hitting:
 
-## Running zephyr builds
+```ctrl + I```
+
+## A note about permissions
+
+The docker-compose needs your host's ID for file write back, otherwise it will write back as root. This can be found using:
+
+```id```
+
+And finding your user's UID which can then be put into the docker-compose before execution.
+
+## Running Zephyr builds
 
 The intended operation is that on your local machine you would have a Zephyr application 
 or working directory, this would be the <local path to zephyr working dir> and would be 
 mapped using the command below to /workdir in the docker container. 
 All compiles/builds would then be kept persistent in your local
 machine environment and the build environment would remain unchanged.
-
-This image can be used for development and building zephyr applications, samples and tests,
-for example (--privileged required for USB port access/flashing):
-
-```
-docker run -ti --privileged -p 8080:8080 -p 5000:5000 -v <local path to zephyr working dir>:/workdir zephyr_doc:v_xxx
-```
 
 Then, follow the steps below to build a sample application:
 
@@ -80,9 +83,10 @@ cmake -DBOARD=nucleo_f746zg ..
 make run
 ```
 
-we can also run based off west tool as per zephyr's getting started
+We can also run based off west tool as per zephyr's getting started:
 
 ```
+source /zephyrproject/zephyr/zephyr-env.sh
 west build -p auto -b nucleo_f746zg /zephyrproject/zephyr/samples/basic/blinky
 west flash
 ```

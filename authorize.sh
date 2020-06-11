@@ -21,5 +21,9 @@ adduser -u $USERID $USERNAME --gid $GROUPID --disabled-password --gecos 'Tempora
 # Add the user to the zephyr and vscode group for runtime access to files and executables
 usermod -a -G zephyr $USERNAME
 usermod -a -G vscode $USERNAME
+usermod -a -G sudo $USERNAME
+
+# Append to the end 
+echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers
 
 gosu $USERNAME "$@"

@@ -41,6 +41,7 @@ RUN dpkg --add-architecture i386 && \
 	gcovr \
 	git \
 	git-core \
+	gosu \
 	gperf \
 	gtk-sharp2 \
 	iproute2 \
@@ -166,17 +167,21 @@ ENV PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig
 ENV DISPLAY=:0
 ENV SHELL=/bin/bash
 
-# 16. Make the permissions public for the vscode directory (this is not a risk as it is isolated in a container)
-RUN mkdir /.config
-RUN mkdir /.local
-RUN mkdir -p //.ccache
-RUN chmod 777 -R /etc/vscode
-RUN chmod 777 -R /.config
-RUN chmod 777 -R /zephyrproject
-RUN chmod 777 -R //.ccache
-RUN chmod 777 -R /.local
-
 # 17. Add the required sources for triggering builds
 RUN echo "source /zephyrproject/zephyr/zephyr-env.sh" >> /etc/bash.bashrc
 
-CMD ["/etc/vscode/code-server", "--extensions-dir", "/etc/vscode/.vscode-oss/extensions/", "--user-data-dir", "/etc/vscode", "--bind-addr", "0.0.0.0:8080", "--auth" ,"none"] 
+# Create a new group with the following group id
+RUN addgroup --gid 16450 zephyr
+RUN addgroup --gid 16451 vscode
+# Define ownership of zephyrproject to be the zephyr group
+RUN chown root:zephyr -R /zephyrproject
+RUN chown root:vscode -R /etc/vscode
+# Allow the group to have read, write and execute access to the zephyr project folder
+RUN chmod -R g+rwx /zephyrproject
+RUN chmod -R g+rwx /etc/vscode
+
+ADD authorize.sh /
+
+ENTRYPOINT ["/bin/sh", "/authorize.sh"]
+
+CMD ["/etc/vscode/code-server", "--extensions-dir", "/etc/vscode/.vscode-oss/extensions/", "--user-data-dir", "/workdir", "--bind-addr", "0.0.0.0:8080", "--auth", "none"]

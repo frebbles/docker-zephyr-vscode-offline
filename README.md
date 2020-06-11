@@ -59,11 +59,7 @@ Which will give you a terminal with West and other required tools installed. Alt
 
 ## A note about permissions
 
-The docker-compose needs your host's ID for file write back, otherwise it will write back as root. This can be found using:
-
-```id```
-
-And finding your user's UID which can then be put into the docker-compose before execution.
+The docker-compose needs your host's ID for file write back, otherwise it will write back as root. To do this, create workdir and map it to /workdir (as shown in the docker-compose.yaml file) using the user you want to model permissions from.
 
 ## Running Zephyr builds
 

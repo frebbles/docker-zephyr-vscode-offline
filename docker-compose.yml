@@ -8,7 +8,6 @@ services:
     restart: always
     cpus: '4'
     privileged: true
-    user: "${UID}:${GID}"
     volumes:
       - ./workdir:/workdir
     restart: always

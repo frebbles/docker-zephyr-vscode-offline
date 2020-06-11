@@ -6,7 +6,7 @@ WHO=/workdir
 # Work out if the folder exists
 stat $WHO > /dev/null || (echo You must mount a file to "$WHO" in order to properly assume user && exit 1)
 
-# Infert the USERID and GROUPID of the host
+# Infer the USERID and GROUPID of the host
 USERID=$(stat -c %u $WHO)
 GROUPID=$(stat -c %g $WHO)
 USERNAME=user
@@ -23,7 +23,7 @@ usermod -a -G zephyr $USERNAME
 usermod -a -G vscode $USERNAME
 usermod -a -G sudo $USERNAME
 
-# Append to the end 
+# Add the user to the sudo list without a need for a password
 echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers
 
 gosu $USERNAME "$@"

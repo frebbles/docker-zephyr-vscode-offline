@@ -117,6 +117,17 @@ RUN wget -q "https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${Z
 	sh "zephyr-sdk-${ZSDK_VERSION}-setup.run" --quiet -- -d /opt/toolchains/zephyr-sdk-${ZSDK_VERSION} && \
 	rm "zephyr-sdk-${ZSDK_VERSION}-setup.run"
 
+# 8.1 Setup some symlinks for vscode to find and run debugger
+RUN ln -s \
+	/opt/toolchains/zephyr-sdk-${ZSDK_VERSION}/arm-zephyr-eabi/bin/arm-zephyr-eabi-gdb \
+	/opt/toolchains/zephyr-sdk-${ZSDK_VERSION}/arm-zephyr-eabi/bin/arm-none-eabi-gdb
+RUN ln -s \
+	/opt/toolchains/zephyr-sdk-${ZSDK_VERSION}/arm-zephyr-eabi/bin/arm-zephyr-eabi-objdump \
+	/opt/toolchains/zephyr-sdk-${ZSDK_VERSION}/arm-zephyr-eabi/bin/arm-none-eabi-objdump
+RUN sudo ln -s \
+	/opt/toolchains/zephyr-sdk-${ZSDK_VERSION}/sysroots/x86_64-pokysdk-linux/usr/bin/openocd \
+	/usr/local/bin/openocd
+
 # 9. Download and install GNU
 RUN wget -q https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2019q4/RC2.1/${GCC_ARM_NAME}-x86_64-linux.tar.bz2  && \
 	tar xf ${GCC_ARM_NAME}-x86_64-linux.tar.bz2 && \
@@ -131,34 +142,34 @@ RUN wget https://github.com/cdr/code-server/releases/download/v${VSCODESERVER_VE
     && tar -xzvf code-server-${VSCODESERVER_VERSION}-linux-x86_64.tar.gz && chmod +x code-server-${VSCODESERVER_VERSION}-linux-x86_64/code-server
 
 # 12. Move Visual Studio Code to it's own folder (easier referencing in later steps and in the CMD step)
-RUN /bin/bash -c "mv /code-server-${VSCODESERVER_VERSION}-linux-x86_64/ /etc/vscode/"
+RUN /bin/bash -c "mv /code-server-${VSCODESERVER_VERSION}-linux-x86_64/ /opt/vscode/"
 
 # 13. Extra python module installation
 ADD ./add-reqs.txt /home/user/add-reqs.txt
 RUN pip3 install -r /home/user/add-reqs.txt
 
 # 14. Install the required extensions for debugging
-RUN /etc/vscode/code-server \
-        --user-data-dir=/etc/vscode/.vscode/ \
-        --extensions-dir=/etc/vscode/.vscode-oss/extensions/ \
+RUN /opt/vscode/code-server \
+        --user-data-dir=/opt/vscode/.vscode/ \
+        --extensions-dir=/opt/vscode/.vscode-oss/extensions/ \
         --install-extension ms-vscode.cpptools
 
-RUN /etc/vscode/code-server \
-        --user-data-dir=/etc/vscode/.vscode/ \
-        --extensions-dir=/etc/vscode/.vscode-oss/extensions/ \
+RUN /opt/vscode/code-server \
+        --user-data-dir=/opt/vscode/.vscode/ \
+        --extensions-dir=/opt/vscode/.vscode-oss/extensions/ \
         --install-extension marus25.cortex-debug
 
-RUN /etc/vscode/code-server \
-        --user-data-dir=/etc/vscode/.vscode/ \
-        --extensions-dir=/etc/vscode/.vscode-oss/extensions/ \
+RUN /opt/vscode/code-server \
+        --user-data-dir=/opt/vscode/.vscode/ \
+        --extensions-dir=/opt/vscode/.vscode-oss/extensions/ \
         --install-extension lextudio.restructuredtext
 
-RUN mkdir /etc/vscode/SVD
-RUN mkdir /etc/vscode/vscode_default
-RUN mkdir -p /etc/vscode/.vscode/User/state/
-ADD ./svd/STM32F746.svd /etc/vscode/SVD/STM32F746.svd
-ADD ./vscode_defaults/* /etc/vscode/vscode_default/
-ADD ./vscode_defaults/global.json /etc/vscode/.vscode/User/state/
+RUN mkdir /opt/vscode/SVD
+RUN mkdir /opt/vscode/vscode_default
+RUN mkdir -p /opt/vscode/.vscode/User/state/
+ADD ./svd/STM32F746.svd /opt/vscode/SVD/STM32F746.svd
+ADD ./vscode_defaults/* /opt/vscode/vscode_default/
+ADD ./vscode_defaults/global.json /opt/vscode/.vscode/User/state/
 
 # 15. Set the locale for Zephyr RTOS
 ENV ZEPHYR_TOOLCHAIN_VARIANT=zephyr
@@ -177,13 +188,13 @@ RUN addgroup --gid 16450 zephyr
 RUN addgroup --gid 16451 vscode
 # Define ownership of zephyrproject to be the zephyr group
 RUN chown root:zephyr -R /zephyrproject
-RUN chown root:vscode -R /etc/vscode
+RUN chown root:vscode -R /opt/vscode
 # Allow the group to have read, write and execute access to the zephyr project folder
 RUN chmod -R g+rwx /zephyrproject
-RUN chmod -R g+rwx /etc/vscode
+RUN chmod -R g+rwx /opt/vscode
 
 ADD authorize.sh /
 
 ENTRYPOINT ["/bin/sh", "/authorize.sh"]
 
-CMD ["/etc/vscode/code-server", "--extensions-dir", "/etc/vscode/.vscode-oss/extensions/", "--user-data-dir", "/workdir", "--bind-addr", "0.0.0.0:8080", "--auth", "none"]
+CMD ["/opt/vscode/code-server", "--extensions-dir", "/opt/vscode/.vscode-oss/extensions/", "--user-data-dir", "/workdir", "--bind-addr", "0.0.0.0:8080", "--auth", "none"]

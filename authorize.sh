@@ -11,10 +11,10 @@ USERID=$(stat -c %u $WHO)
 GROUPID=$(stat -c %g $WHO)
 USERNAME=user
 
-echo $USERNAME
+echo $USERNAME $USERID $GROUPID
 
 # Create the user
-deluser $USERNAME > /dev/null 2>&1
+deluser $USERNAME --remove-home > /dev/null 2>&1
 addgroup --gid $GROUPID $USERNAME
 adduser -u $USERID $USERNAME --gid $GROUPID --disabled-password --gecos 'Temporary User,,,,'
 
@@ -22,6 +22,11 @@ adduser -u $USERID $USERNAME --gid $GROUPID --disabled-password --gecos 'Tempora
 usermod -a -G zephyr $USERNAME
 usermod -a -G vscode $USERNAME
 usermod -a -G sudo $USERNAME
+
+# Add vscode default config to workdir if it doesnt exist.
+if [ ! -d "/workdir/.vscode" ]; then
+  cp -r /opt/vscode/vscode_default /workdir/.vscode
+fi
 
 # Add the user to the sudo list without a need for a password
 echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers

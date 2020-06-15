@@ -13,7 +13,7 @@
             "type": "cortex-debug",
             "servertype": "openocd",
             "device": "STM32F746ZG",
-            "svdFile": "${env:HOME}/SVD/STM32F746.svd",
+            "svdFile": "/opt/vscode/SVD/STM32F746.svd",
             "armToolchainPath": "/opt/toolchains/zephyr-sdk-0.11.2/arm-zephyr-eabi/bin",
             "interface": "swd",
             "configFiles": [

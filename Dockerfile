@@ -132,8 +132,13 @@ RUN wget https://github.com/cdr/code-server/releases/download/v${VSCODESERVER_VE
 
 # 12. Move Visual Studio Code to it's own folder (easier referencing in later steps and in the CMD step)
 RUN /bin/bash -c "mv /code-server-${VSCODESERVER_VERSION}-linux-x86_64/ /etc/vscode/"
+=======
 
-# 13. Install the required extensions for debugging
+# 13. Extra python module installation
+ADD ./add-reqs.txt /home/user/add-reqs.txt
+RUN pip3 install -r /home/user/add-reqs.txt
+
+# 14. Install the required extensions for debugging
 RUN /etc/vscode/code-server \
         --user-data-dir=/etc/vscode/.vscode/ \
         --extensions-dir=/etc/vscode/.vscode-oss/extensions/ \
@@ -165,10 +170,10 @@ ENV PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig
 ENV DISPLAY=:0
 ENV SHELL=/bin/bash
 
-# 17. Add the required sources for triggering builds
+# 16. Add the required sources for triggering builds
 RUN echo "source /zephyrproject/zephyr/zephyr-env.sh" >> /etc/bash.bashrc
 
-# Create a new group with the following group id
+# 17. Create a new group with the following group id
 RUN addgroup --gid 16450 zephyr
 RUN addgroup --gid 16451 vscode
 # Define ownership of zephyrproject to be the zephyr group

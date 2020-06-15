@@ -132,7 +132,6 @@ RUN wget https://github.com/cdr/code-server/releases/download/v${VSCODESERVER_VE
 
 # 12. Move Visual Studio Code to it's own folder (easier referencing in later steps and in the CMD step)
 RUN /bin/bash -c "mv /code-server-${VSCODESERVER_VERSION}-linux-x86_64/ /etc/vscode/"
-=======
 
 # 13. Extra python module installation
 ADD ./add-reqs.txt /home/user/add-reqs.txt

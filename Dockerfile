@@ -113,8 +113,8 @@ RUN west init /zephyrproject && \
         pip3 install -r /zephyrproject/zephyr/scripts/requirements.txt
 
 # 7.1 Patch OpenOCD to address thread awareness bug
-RUN echo -e "\n\$_TARGETNAME configure -rtos auto" >> /zephyrproject/zephyr/boards/arm/nucleo_f746zg/support/openocd.cfg
-RUN echo -e "\n\$_TARGETNAME configure -rtos auto" >> /zephyrproject/zephyr/boards/arm/nucleo_f756zg/support/openocd.cfg
+RUN echo '$_TARGETNAME configure -rtos auto' >> /zephyrproject/zephyr/boards/arm/nucleo_f746zg/support/openocd.cfg
+RUN echo '$_TARGETNAME configure -rtos auto' >> /zephyrproject/zephyr/boards/arm/nucleo_f756zg/support/openocd.cfg
 
 # 8. Download and install the Zephyr RTOS SDK, remove the installer after completion
 RUN wget -q "https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${ZSDK_VERSION}/zephyr-sdk-${ZSDK_VERSION}-setup.run" && \
@@ -196,6 +196,12 @@ RUN chown root:vscode -R /opt/vscode
 # Allow the group to have read, write and execute access to the zephyr project folder
 RUN chmod -R g+rwx /zephyrproject
 RUN chmod -R g+rwx /opt/vscode
+
+# Create a stub user for integrity checks when authorize.sh is run
+RUN groupadd -g 1000 -o user
+RUN useradd -u 1000 -m -g user -G plugdev user \
+	&& echo 'user ALL = NOPASSWD: ALL' > /etc/sudoers.d/user \
+	&& chmod 0440 /etc/sudoers.d/user
 
 ADD authorize.sh /
 

@@ -168,6 +168,11 @@ RUN /opt/vscode/code-server \
         --extensions-dir=/opt/vscode/.vscode-oss/extensions/ \
         --install-extension lextudio.restructuredtext
 
+RUN /opt/vscode/code-server \
+        --user-data-dir=/opt/vscode/.vscode/ \
+        --extensions-dir=/opt/vscode/.vscode-oss/extensions/ \
+        --install-extension akamud.vscode-theme-onedark
+
 RUN mkdir /opt/vscode/SVD
 RUN mkdir /opt/vscode/vscode_default
 RUN mkdir -p /opt/vscode/.vscode/User/state/

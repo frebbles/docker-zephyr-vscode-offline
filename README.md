@@ -37,7 +37,8 @@ And then apply executable permissions to the binary:
 ```sudo chmod +x /usr/local/bin/docker-compose```
 
 ## Running the Development Environment
-To run the image, execute:
+
+To run/build the image, execute:
 
 ```docker-compose up```
 
@@ -69,11 +70,12 @@ mapped using the command below to /workdir in the docker container.
 All compiles/builds would then be kept persistent in your local
 machine environment and the build environment would remain unchanged.
 
-Then, follow the steps below to build a sample application:
+Then, follow the steps below to build a sample application (possible within vscode terminal) :
 
 ```
-cd samples/hello_world
-mkdir build
+cd /workdir
+cp -r /zephyrproject/zephyr/samples/hello_world ./
+mkdir build 
 cd build
 cmake -DBOARD=nucleo_f746zg ..
 make run
@@ -142,26 +144,29 @@ debugger.
 
   1. Thread aware debugging in VSCode
 
-To enable thread aware debugging, ensure that you run the menu config and enable the following:
+  To enable thread aware debugging, ensure that you run the menu config and enable the following:
 
-```west build -p auto -t menuconfig -b nucleo_f746zg ./projectname```
+  ```west build -p auto -t menuconfig -b nucleo_f746zg ./projectname```
 
-- Debugging Options >> "Build kernel with debugging enabled"
-- Debugging Options >> "OpenOCD Support"
-- Build and Link Features >> Compiler Options >> Optimization level (Optimize debugging experience)
+  - Debugging Options >> "Build kernel with debugging enabled"
+  - Debugging Options >> "OpenOCD Support"
+  - Build and Link Features >> Compiler Options >> Optimization level (Optimize debugging experience)
+
+  Ensure that VSCode has the workspace directory set to one above the build directory, then using Cortex-Debug
+  you can run the debugger.
 
   2. Other debugging
 
-Debugging with other tools can be triggered by (with default project under /workdir/build)
+  Debugging with other tools can be triggered by (with default project under /workdir/build)
 
-Start OpenOCD with gdb connection service on 50000
-```/opt/toolchains/zephyr-sdk-0.11.2/sysroots/x86_64-pokysdk-linux/usr/bin/openocd -c "gdb_port 50000" -s /workdir -f /zephyrproject/zephyr/boards/arm/nucleo_f746zg/support/openocd.cfg```
+  Start OpenOCD with gdb connection service on 50000
+  ```/opt/toolchains/zephyr-sdk-0.11.2/sysroots/x86_64-pokysdk-linux/usr/bin/openocd -c "gdb_port 50000" -s /workdir -f /zephyrproject/zephyr/boards/arm/nucleo_f746zg/support/openocd.cfg```
 
-Via a second terminal:
-```docker exec -ti "container name" bash```
+  Via a second terminal:
+  ```docker exec -ti "container name" bash```
 
-Connect gdbgui (accessible on host via web browser on localhost:5000)
-```python3 -m gdbgui -g /opt/toolchains/zephyr-sdk-0.11.2/arm-zephyr-eabi/bin/arm-zephyr-eabi-gdb --host 0.0.0.0 --project /workdir/build```
+  Connect gdbgui (accessible on host via web browser on localhost:5000)
+  ```python3 -m gdbgui -g /opt/toolchains/zephyr-sdk-0.11.2/arm-zephyr-eabi/bin/arm-zephyr-eabi-gdb --host 0.0.0.0 --project /workdir/build```
 
 ## Moving the Docker image
 

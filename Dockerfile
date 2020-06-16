@@ -201,6 +201,7 @@ RUN chown root:vscode -R /opt/vscode
 # Allow the group to have read, write and execute access to the zephyr project folder
 RUN chmod -R g+rw /zephyrproject
 RUN chmod -R g+rw /opt/vscode
+RUN chmod -R ug+x /opt/vscode/.vscode-oss/extensions/ms-vscode.cpptools-0.28.3/bin/cpptools*
 
 # Create a stub user for integrity checks when authorize.sh is run
 RUN groupadd -g 1000 -o user

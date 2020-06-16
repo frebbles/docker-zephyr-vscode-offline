@@ -26,6 +26,7 @@ usermod -a -G sudo $USERNAME
 # Add vscode default config to workdir if it doesnt exist.
 if [ ! -d "/workdir/.vscode" ]; then
   cp -r /opt/vscode/vscode_default /workdir/.vscode
+  chown $USERID:$GROUPID -R /workdir/.vscode
 fi
 
 # Add the user to the sudo list without a need for a password

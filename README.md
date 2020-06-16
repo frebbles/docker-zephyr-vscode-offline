@@ -140,6 +140,18 @@ After performing a clean flash, debugging can be started from within VSCODE by
 clicking the debugging icon on the left and selecting the "start" arrow to trigger the 
 debugger.
 
+  1. Thread aware debugging in VSCode
+
+To enable thread aware debugging, ensure that you run the menu config and enable the following:
+
+```west build -p auto -t menuconfig -b nucleo_f746zg ./projectname```
+
+- Debugging Options >> "Build kernel with debugging enabled"
+- Debugging Options >> "OpenOCD Support"
+- Build and Link Features >> Compiler Options >> Optimization level (Optimize debugging experience)
+
+  2. Other debugging
+
 Debugging with other tools can be triggered by (with default project under /workdir/build)
 
 Start OpenOCD with gdb connection service on 50000

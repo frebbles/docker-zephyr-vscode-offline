@@ -112,6 +112,10 @@ RUN west init /zephyrproject && \
         west zephyr-export && \
         pip3 install -r /zephyrproject/zephyr/scripts/requirements.txt
 
+# 7.1 Patch OpenOCD to address thread awareness bug
+RUN echo -e "\n\$_TARGETNAME configure -rtos auto" >> /zephyrproject/zephyr/boards/arm/nucleo_f746zg/support/openocd.cfg
+RUN echo -e "\n\$_TARGETNAME configure -rtos auto" >> /zephyrproject/zephyr/boards/arm/nucleo_f756zg/support/openocd.cfg
+
 # 8. Download and install the Zephyr RTOS SDK, remove the installer after completion
 RUN wget -q "https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${ZSDK_VERSION}/zephyr-sdk-${ZSDK_VERSION}-setup.run" && \
 	sh "zephyr-sdk-${ZSDK_VERSION}-setup.run" --quiet -- -d /opt/toolchains/zephyr-sdk-${ZSDK_VERSION} && \
